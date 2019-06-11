@@ -1,4 +1,4 @@
-#define PRESSURE_PIN A5
+#define PRESSURE_PIN A5  //pin sur lequel est branché le capteur 
 #include "RunningAverage.h"
  
 RunningAverage MoyGliss(4);  // objet "Moyenne Glissante" avec nombre d'échantillons pour le calcul
@@ -6,9 +6,9 @@ int compteur = 0;             // un compteur d'échantillons
 int moyenne = 0;
 float avant = 0;
 float time;
-float ref_pressure_in_Pa, air_pressure_in_Pa, pressure_diff_in_Pa, tension;
+float ref_pressure_in_Pa, air_pressure_in_Pa, pressure_diff_in_Pa, tension; //definition de toute les variables 
 
-float airspeed_ratio = 1.54679; // 2x1000/ρ (ρ = 1,293 kg/m3 )
+float airspeed_ratio = 1.54679; // 2x1000/ρ (ρ = 1,293 kg/m3 )  // constante utile pour le calcul de la vitesse 
 float airspeed;
 int pressure_in_bit;
 
@@ -17,13 +17,13 @@ void setup()
 Serial.begin(9600);
 delay(1000);
 MoyGliss.clear();
-Serial.println("Initializing...");
+Serial.println("Initializing...");   // initialisation 
 
 // init ref
 for (int i=1;i<=50;i++)
 {
-pressure_in_bit = (analogRead(PRESSURE_PIN))*0.25 + pressure_in_bit*0.75;
-ref_pressure_in_Pa = map(pressure_in_bit,0,1023,-2222,2222);
+pressure_in_bit = (analogRead(PRESSURE_PIN))*0.25 + pressure_in_bit*0.75;   //acquisition de la pression totale selon la datasheet du capteur 
+ref_pressure_in_Pa = map(pressure_in_bit,0,1023,-2222,2222);  
 delay(20);
 }
 Serial.println("init done");
@@ -35,7 +35,7 @@ void loop()
 if ((millis() - time) >= 50)
 {
 time = millis();
-pressure_in_bit = analogRead(PRESSURE_PIN)*0.25 + pressure_in_bit*0.75;
+pressure_in_bit = analogRead(PRESSURE_PIN)*0.25 + pressure_in_bit*0.75;  //acquisition de la pression totale selon la datasheet du capteur 
 // Re-convert digital to analog float
 air_pressure_in_Pa = map(pressure_in_bit,0,1023,-2222,2222);
 //tension = mapfloat(pressure_in_bit,0,1023,0,5);
